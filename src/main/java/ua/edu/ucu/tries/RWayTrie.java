@@ -95,11 +95,10 @@ public class RWayTrie implements Trie {
 
         Object[] queueArray = queue.toArray();
 
-        //String[] array = (String[]) Arrays.stream(queueArray).map(x -> (String) x).toArray();
-        String[] toReturn = Arrays.copyOf(queueArray, queueArray.length, String[].class);
-        Arrays.sort(toReturn, Comparator.comparingInt(String::length));
+        String[] wordsArray = Arrays.copyOf(queueArray, queueArray.length, String[].class);
+        Arrays.sort(wordsArray, Comparator.comparingInt(String::length));
 
-        return Arrays.asList(toReturn);
+        return Arrays.asList(wordsArray);
     }
 
     private void collect(Node node, String s, Queue queue) {

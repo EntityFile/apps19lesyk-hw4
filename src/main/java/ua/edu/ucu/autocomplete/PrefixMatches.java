@@ -56,13 +56,11 @@ public class PrefixMatches {
 
             for (String word : wordsWithPrefix(pref)) {
                 if (word.length() >= 3) {
-                    System.out.println(word);
                     if (word.length() > wordLength) {
                         wordLength += 1;
                         counter += 1;
                     }
                     if (counter > k) {
-                        System.out.println(word);
                         break;
                     }
                     wordsList.add(word);
