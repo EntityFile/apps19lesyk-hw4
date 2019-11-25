@@ -1,5 +1,10 @@
 package ua.edu.ucu.tries;
 
+import ua.edu.ucu.utils.Queue;
+
+import java.util.Arrays;
+import java.util.Comparator;
+
 public class RWayTrie implements Trie {
     private static final int SIZE = 26;
 
@@ -52,7 +57,7 @@ public class RWayTrie implements Trie {
                 return null;
             }
             ch = word.charAt(ind);
-            node = node.next[ch];
+            node = node.next[ch - 97];
         }
         return node;
     }
@@ -75,13 +80,40 @@ public class RWayTrie implements Trie {
 
     @Override
     public Iterable<String> words() {
-
+        return wordsWithPrefix("");
     }
 
     @Override
     public Iterable<String> wordsWithPrefix(String s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Node node = get(s);
+        Queue queue = new Queue();
+        collect(node, s, queue);
+
+        if (!contains(s)){
+            queue.dequeue();
+        }
+
+        Object[] queueArray = queue.toArray();
+
+        //String[] array = (String[]) Arrays.stream(queueArray).map(x -> (String) x).toArray();
+        String[] toReturn = Arrays.copyOf(queueArray, queueArray.length, String[].class);
+        Arrays.sort(toReturn, Comparator.comparingInt(String::length));
+
+        return Arrays.asList(toReturn);
     }
+
+    private void collect(Node node, String s, Queue queue) {
+        if (node == null){
+            return;
+        }
+        if (node.wordEnd) {
+            queue.enqueue(s);
+        }
+        for (char ch = 97; ch < SIZE + 97; ch++) {
+            collect(node.next[ch - 97], s + ch, queue);
+        }
+    }
+
 
     @Override
     public int size() {

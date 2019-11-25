@@ -3,6 +3,8 @@ package ua.edu.ucu.autocomplete;
 import ua.edu.ucu.tries.Trie;
 import ua.edu.ucu.tries.Tuple;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author andrii
@@ -20,7 +22,7 @@ public class PrefixMatches {
         for (String word : strings) {
             String[] words = word.trim().split("\\s+");
             for (String element : words) {
-                if (!(trie.contains(element)) && element.length() > 2) {
+                if (!(trie.contains(element)) && element.length() >= 2) {
                     trie.add(new Tuple(element, element.length()));
                     words_number += 1;
                 }
@@ -38,14 +40,42 @@ public class PrefixMatches {
     }
 
     public Iterable<String> wordsWithPrefix(String pref) {
-        throw new UnsupportedOperationException("Not supported yet.");        
+        if (pref.length() >= 2) {
+            return trie.wordsWithPrefix(pref);
+        }
+        else {
+            return null;
+        }
     }
 
     public Iterable<String> wordsWithPrefix(String pref, int k) {
-        throw new UnsupportedOperationException("Not supported yet.");        
+        if (pref.length() >= 2) {
+            ArrayList<String> wordsList = new ArrayList<>();
+            int counter = 1;
+            int wordLength = 3;
+
+            for (String word : wordsWithPrefix(pref)) {
+                if (word.length() >= 3) {
+                    System.out.println(word);
+                    if (word.length() > wordLength) {
+                        wordLength += 1;
+                        counter += 1;
+                    }
+                    if (counter > k) {
+                        System.out.println(word);
+                        break;
+                    }
+                    wordsList.add(word);
+                }
+            }
+
+            return wordsList;
+        } else {
+            return null;
+        }
     }
 
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return trie.size();
     }
 }
